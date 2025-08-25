@@ -1,0 +1,131 @@
+/* ----------------- Global Styles ----------------- */
+body, .admin-body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #f0f4f8, #e0e8f0);
+    min-height: 100vh;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ----------------- Container ----------------- */
+.admin-container {
+    background-color: white;
+    padding: 40px;
+    width: 100%;
+    max-width: 900px;
+    border-radius: 12px;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+/* ----------------- Header ----------------- */
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* title left, buttons right */
+    align-items: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.header h2 {
+    font-size: 28px;
+    color: #007aff;
+    margin: 0;
+    text-align: left;
+}
+
+/* ----------------- Header Buttons ----------------- */
+.header-buttons {
+    display: flex;
+    gap: 10px; /* equal spacing between all buttons */
+}
+
+.header-buttons a {
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: white;
+    background-color: #007aff;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.header-buttons a:hover {
+    background-color: #005bb5;
+    transform: translateY(-2px);
+}
+
+/* ----------------- Admin Table ----------------- */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.admin-table th, .admin-table td {
+    padding: 14px 20px;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+.admin-table th {
+    background-color: #f5f7fa;
+    font-weight: 600;
+}
+
+.admin-table tr:hover {
+    background-color: #f0f4ff;
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* ----------------- Action Buttons ----------------- */
+.action-buttons {
+    display: flex;
+    justify-content: center; /* center all buttons */
+    gap: 6px;
+}
+
+.action-buttons a {
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    color: white;
+    background-color: #007aff;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.action-buttons a:hover {
+    background-color: #005bb5;
+    transform: translateY(-2px);
+}
+
+/* ----------------- Export All Button ----------------- */
+.export-all-btn {
+    background-color: #28a745; /* green */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.export-all-btn:hover {
+    background-color: #1e7e34;
+}

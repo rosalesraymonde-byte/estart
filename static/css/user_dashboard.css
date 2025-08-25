@@ -1,0 +1,143 @@
+/* ----------------- Global Dashboard Styles ----------------- */
+.dashboard-body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #f0f4f8, #e0e8f0);
+    min-height: 100vh;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ----------------- Dashboard Container ----------------- */
+.dashboard-container {
+    background-color: white;
+    padding: 40px;
+    width: 100%;
+    max-width: 800px;
+    border-radius: 12px;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ----------------- Logout Button ----------------- */
+.logout-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #007aff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.logout-btn:hover {
+    background-color: #005bb5;
+}
+
+/* ----------------- Headings ----------------- */
+.dashboard-container h2 {
+    font-size: 28px;
+    color: #007aff;
+    margin: 0 0 25px 0;
+    text-align: center;
+}
+
+.dashboard-container h3 {
+    font-size: 22px;
+    color: #333;
+    margin: 30px 0 15px 0;
+    text-align: center;
+    width: 100%;
+    border-bottom: 2px solid #e0e8f0;
+    padding-bottom: 5px;
+}
+
+/* ----------------- Buttons ----------------- */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.button-group button {
+    padding: 12px 30px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    color: white;
+    background-color: #007aff;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.button-group button:hover:not(:disabled) {
+    background-color: #005bb5;
+    transform: translateY(-2px);
+}
+
+.button-group button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* ----------------- Message ----------------- */
+.dashboard-container p {
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+/* ----------------- Attendance Table ----------------- */
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.attendance-table th, .attendance-table td {
+    padding: 14px 20px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.attendance-table th {
+    background-color: #f5f7fa;
+    font-weight: 600;
+}
+
+.attendance-table tr:hover {
+    background-color: #f0f4ff;
+}
+
+.attendance-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* ----------------- New Log Highlight ----------------- */
+@keyframes highlightFade {
+    0% {
+        background-color: #e0e0e0; /* light gray */
+    }
+    100% {
+        background-color: white; /* back to normal */
+    }
+}
+
+.new-log {
+    animation: highlightFade 1s ease-out;
+}
+
