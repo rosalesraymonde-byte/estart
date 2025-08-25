@@ -8,6 +8,10 @@ import requests
 app = Flask(__name__)
 app.secret_key = "replace_with_a_random_secret"
 
+@app.route("/")
+def home():
+    return "Hello from Flask on Render!"
+
 TRUSTED_PUBLIC_IPS = ["27.49.13.224"]
 
 # ------------------- Helpers -------------------
@@ -330,4 +334,5 @@ def logout():
     return redirect(url_for("login"))
 
 if __name__ == "__main__":
+
     app.run(host="0.0.0.0", port=5000, debug=True)
