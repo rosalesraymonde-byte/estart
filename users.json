@@ -1,0 +1,23 @@
+{
+    "rr110204": {
+        "first_name": "Raymond",
+        "last_name": "Rosales",
+        "password": "test",
+        "role": "User",
+        "email": "rarosales@arbcentrix.com"
+    },
+    "admin": {
+        "first_name": "Admin",
+        "last_name": "User",
+        "password": "admin123",
+        "role": "Admin",
+        "email": "admin@arbcentrix.com"
+    },
+    "aa1234": {
+        "first_name": "Juan",
+        "last_name": "Dela Cruz",
+        "email": "aa1234@arbcentrix.com",
+        "password": "P@ssw0rd",
+        "role": "User"
+    }
+}
