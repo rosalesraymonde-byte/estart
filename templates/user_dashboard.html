@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user_dashboard.css') }}">
+</head>
+<body class="dashboard-body">
+    <div class="dashboard-container">
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        <h2>Welcome, {{ user.first_name }} {{ user.last_name }}</h2>
+
+        <div class="button-group">
+            <form method="POST">
+                <button name="action" value="Time In" {% if time_in_disabled %}disabled{% endif %}>Time In</button>
+                <button name="action" value="Time Out" {% if time_out_disabled %}disabled{% endif %}>Time Out</button>
+            </form>
+        </div>
+
+        {% if message %}
+        <p class="message">{{ message }}</p>
+        {% endif %}
+
+        <h3>Your Attendance</h3>
+        <table class="attendance-table">
+            <tr>
+                <th>Action</th>
+                <th>Timestamp</th>
+                <th>IP</th>
+                <th>Device</th>
+            </tr>
+            {% for entry in log %}
+            <tr class="{% if loop.first %}new-log{% endif %}">
+                <td>{{ entry.action }}</td>
+                <td>{{ entry.time }}</td>
+                <td>{{ entry.ip }}</td>
+                <td>{{ entry.device }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

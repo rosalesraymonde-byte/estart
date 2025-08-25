@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ "Edit User" if emp_id else "Add User" }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/add_users.css') }}">
+</head>
+<body class="manage-body">
+    <div class="manage-container">
+        <h2>{{ "Edit User" if emp_id else "Add User" }}</h2>
+        <div class="add-user-card">
+            <form method="POST" class="add-user-form">
+                {% if not emp_id %}
+                    <input type="text" name="emp_id" placeholder="Employee ID" required>
+                {% else %}
+                    <p><strong>Employee ID:</strong> {{ emp_id }}</p>
+                {% endif %}
+                
+                <input type="text" name="first_name" placeholder="First Name" required
+                       value="{{ user.first_name if user else '' }}">
+                <input type="text" name="last_name" placeholder="Last Name" required
+                       value="{{ user.last_name if user else '' }}">
+                <input type="email" name="email" placeholder="Email" required
+                       value="{{ user.email if user else '' }}">
+                
+                {% if emp_id %}
+                    <input type="password" name="password" placeholder="Password (leave blank to keep current)">
+                {% else %}
+                    <input type="password" name="password" placeholder="Password" required>
+                {% endif %}
+                
+                <select name="role" required>
+                    <option value="">Select Role</option>
+                    <option value="Admin" {% if user and user.role == 'Admin' %}selected{% endif %}>Admin</option>
+                    <option value="User" {% if user and user.role == 'User' %}selected{% endif %}>User</option>
+                </select>
+                
+                <button type="submit" class="btn add-btn">{{ "Update User" if emp_id else "Add User" }}</button>
+            </form>
+        </div>
+        <a href="{{ url_for('admin_dashboard') }}" class="back-btn">Back to Dashboard</a>
+        {% if message %}
+            <p style="color: green; margin-top: 10px;">{{ message }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>

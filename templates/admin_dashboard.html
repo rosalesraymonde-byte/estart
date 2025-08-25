@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_dashboard.css') }}">
+</head>
+<body class="admin-body">
+    <div class="admin-container">
+        <!-- Header with Logout and Add User aligned right -->
+        <div class="header">
+            <h2>Admin Dashboard</h2>
+            <div class="header-buttons">
+                <a href="{{ url_for('add_users') }}" class="add-user-btn">Add User</a>
+                <a href="{{ url_for('export_all_users') }}" class="export-all-btn">Export All</a>
+                <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+            </div>
+        </div>
+
+        <!-- Users Table -->
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emp_id, user in users.items() %}
+                <tr>
+                    <td>{{ emp_id }}</td>
+                    <td>{{ user.first_name }}</td>
+                    <td>{{ user.last_name }}</td>
+                    <td>{{ user.email if user.email else '-' }}</td>
+                    <td>{{ user.role }}</td>
+                    <td class="action-buttons">
+                        <a href="{{ url_for('view_user', emp_id=emp_id) }}">View</a>
+                        <a href="{{ url_for('add_users', emp_id=emp_id) }}">Edit</a>
+                        <a href="{{ url_for('delete_user', emp_id=emp_id) }}">Delete</a>
+                        <a href="{{ url_for('export_user', emp_id=emp_id) }}">Export</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

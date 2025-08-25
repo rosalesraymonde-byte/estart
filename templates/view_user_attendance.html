@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Attendance</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/view_user_attendance.css') }}">
+</head>
+<body class="attendance-body">
+    <div class="attendance-container">
+        <h2>Attendance for {{ user.first_name }} {{ user.last_name }}</h2>
+
+        <a href="{{ url_for('admin_dashboard') }}" class="back-btn">Back to Dashboard</a>
+
+        <div class="attendance-card">
+            <table class="attendance-table">
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Timestamp</th>
+                        <th>IP</th>
+                        <th>Device</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in log %}
+                    <tr>
+                        <td>{{ entry.action }}</td>
+                        <td>{{ entry.time }}</td>
+                        <td>{{ entry.ip }}</td>
+                        <td>{{ entry.device }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
