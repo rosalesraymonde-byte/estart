@@ -3,7 +3,6 @@ from datetime import datetime
 import json
 import csv
 import io
-import requests
 
 app = Flask(__name__)
 app.secret_key = "replace_with_a_random_secret"
@@ -33,12 +32,11 @@ def save_attendance(attendance_log):
     with open("attendance.json", "w") as f:
         json.dump(attendance_log, f, indent=4)
 
-def get_client_public_ip():
-    try:
-        response = requests.get('https://api.ipify.org?format=json', timeout=5)
-        return response.json().get("ip")
-    except Exception:
-        return None
+def get_client_ip():
+    """Get real client IP behind proxy (Render, Heroku, etc.)."""
+    if request.headers.get("X-Forwarded-For"):
+        return request.headers.get("X-Forwarded-For").split(",")[0].strip()
+    return request.remote_addr
 
 # ------------------- Routes -------------------
 @app.route("/")
@@ -48,10 +46,11 @@ def index():
 # ------------------- Login -------------------
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    client_ip = get_client_public_ip()
-    is_trusted_ip = client_ip in TRUSTED_PUBLIC_IPS
+    client_ip = get_client_ip()
+    print(f"Client IP detected: {client_ip}")  # Debug log
 
-    message = ""  # Initialize message variable
+    is_trusted_ip = client_ip in TRUSTED_PUBLIC_IPS
+    message = ""
 
     if request.method == "POST":
         emp_id = request.form.get("emp_id")
@@ -66,9 +65,8 @@ def login():
             else:
                 return redirect(url_for("user_dashboard"))
         else:
-            message = "Invalid credentials. Please try again."  # Set error message
+            message = "Invalid credentials. Please try again."
 
-    # Render appropriate login template with message
     if is_trusted_ip:
         return render_template("login.html", message=message)
     else:
@@ -84,7 +82,6 @@ def user_dashboard():
     users = load_users()
     attendance_log = load_attendance()
 
-    # Ensure this user's log always exists (append safe)
     if emp_id not in attendance_log:
         attendance_log[emp_id] = []
 
@@ -99,15 +96,13 @@ def user_dashboard():
                 del device_tracker[key]
 
     message = ""
-    client_ip = request.remote_addr
+    client_ip = get_client_ip()
     device = request.headers.get('User-Agent', 'Unknown')
     key = f"{client_ip}|{device}"
 
     if request.method == "POST":
         action = request.form.get("action")
         timestamp = datetime.now().strftime("%Y-%m-%d %I:%M:%S %p")
-
-        # Check last action for this user
         last_action = attendance_log[emp_id][-1]["action"] if attendance_log[emp_id] else None
 
         if action == "Time In":
@@ -146,7 +141,6 @@ def user_dashboard():
                 save_attendance(attendance_log)
                 message = f"Time Out recorded at {timestamp}"
 
-    # Button states based only on valid last action
     last_action = attendance_log[emp_id][-1]["action"] if attendance_log[emp_id] else None
     time_in_disabled = last_action == "Time In"
     time_out_disabled = last_action != "Time In" or device_tracker.get(key) != emp_id
@@ -156,7 +150,7 @@ def user_dashboard():
         emp_id=emp_id,
         user=users[emp_id],
         message=message,
-        log=attendance_log[emp_id][::-1],  # Newest first
+        log=attendance_log[emp_id][::-1],
         time_in_disabled=time_in_disabled,
         time_out_disabled=time_out_disabled
     )
@@ -181,7 +175,6 @@ def add_users(emp_id=None):
     message = ""
     user_data = {}
 
-    # Prefill if editing
     if emp_id:
         user_data = users.get(emp_id)
         if not user_data:
@@ -195,7 +188,7 @@ def add_users(emp_id=None):
         password = request.form.get("password")
         role = request.form.get("role")
 
-        if emp_id:  # Edit user
+        if emp_id:
             user = users[emp_id]
             user['first_name'] = first_name
             user['last_name'] = last_name
@@ -205,7 +198,7 @@ def add_users(emp_id=None):
             user['role'] = role
             save_users(users)
             message = f"User {first_name} {last_name} updated."
-        else:  # Add user
+        else:
             if form_emp_id in users:
                 message = "Employee ID already exists."
             else:
@@ -282,16 +275,13 @@ def export_all_users():
 
     output = io.StringIO()
     writer = csv.writer(output)
-
-    # Header row
     writer.writerow(["Employee ID", "First Name", "Last Name", "Time In", "Time Out"])
 
     for emp_id, user in users.items():
         logs = attendance_log.get(emp_id, [])
-        # Organize by date
         date_dict = {}
         for entry in logs:
-            date_only = entry["time"].split(" ")[0]  # YYYY-MM-DD
+            date_only = entry["time"].split(" ")[0]
             if date_only not in date_dict:
                 date_dict[date_only] = {"Time In": None, "Time Out": None}
 
@@ -300,8 +290,7 @@ def export_all_users():
             elif entry["action"] == "Time Out":
                 date_dict[date_only]["Time Out"] = entry["time"]
 
-        # Write per date
-        if not date_dict:  # No attendance
+        if not date_dict:
             writer.writerow([emp_id, user["first_name"], user["last_name"], user.get("email",""), "", "", ""])
         else:
             for date, times in date_dict.items():
@@ -330,6 +319,4 @@ def logout():
     return redirect(url_for("login"))
 
 if __name__ == "__main__":
-
     app.run(host="0.0.0.0", port=5000, debug=True)
-
